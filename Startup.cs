@@ -30,37 +30,14 @@ namespace WebCache
                 options.Configuration = Configuration.GetConnectionString ("RedisConnection");
             });
 
-            services.AddSession(options =>
-            {
-                options.CookieHttpOnly = true;
-                options.CookieName = ".ASPNetCoreSession";
-                options.IdleTimeout = TimeSpan.FromMinutes(10);
-                options.CookiePath = "/";
-            });
+            services.AddSession();
             services.AddMvc();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            app.UseStaticFiles(new StaticFileOptions()
-            {
-                OnPrepareResponse = context =>
-                    {
-                        string path = context.File.PhysicalPath;
-                        if (path.EndsWith(".css") || path.EndsWith(".js") 
-                            || path.EndsWith(".gif") || path.EndsWith(".jpg") 
-                            || path.EndsWith(".png") || path.EndsWith(".svg")
-                            || path.EndsWith(".ico"))
-                        {
-                            context.Context.Response.Headers["Cache-Control"] =
-                                            "private, max-age=43200";
-
-                            context.Context.Response.Headers["Expires"] =
-                                    DateTime.UtcNow.AddHours(12).ToString("R");
-                        }
-                    }
-            });
+            app.UseStaticFiles();
 
             app.UseSession();
 
