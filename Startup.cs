@@ -26,7 +26,7 @@ namespace WebCache
         {
             services.AddDistributedRedisCache(options =>
             {
-                options.InstanceName = "Sample";
+                options.InstanceName = "redis-1-e6dbw";
                 options.Configuration = "localhost";
             });
 
