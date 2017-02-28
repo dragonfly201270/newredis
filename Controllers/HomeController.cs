@@ -12,20 +12,23 @@ namespace WebCache.Controllers
 {
     public class HomeController : Controller
     {
-        public IActionResult Index()
-        {
-            //var watch = Stopwatch.StartNew();
-            //watch.Stop();
-            // string jSONText = RetrieveOrUpdateRedis();
-
-
-            //TempData["DataLoadTime"] = watch.ElapsedMilliseconds;
-            //var itemsFromjSON = JsonConvert.DeserializeObject<IEnumerable<TwitterItem>>(jSONText);
-            //return View();
-            HttpContext.Session.SetString("User", "Rami");
-            
-            return Json(true);
-        }
+        private IDistributedCache _cache;
+         public HomeController (IDistributedCache cache)
+          {
+           _cache = cache;
+          }
+       public IActionResult Index ()
+{
+string value = _cache.GetString ("Time");
+if (value == null)
+{
+DateTime.Now.ToString value = ();
+_cache.SetString ("CacheTime", value);
+}
+ViewData ["CacheTime"] = value;
+ViewData ["CurrentTime"] = DateTime.Now.ToString ();
+return View ();
+}
 
         public IActionResult About()
         {
