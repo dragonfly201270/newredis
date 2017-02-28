@@ -1,0 +1,38 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+@model IEnumerable<WebCache.Models.TwitterItem>
+
+<h2>Twitter messages #webapi</h2>
+<h4>Time to load the data: @TempData["DataLoadTime"]ms</h4>
+<h4>From where is loaded: @TempData["DataLoadType"]</h4>
+
+<table  class="bordered">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Message</th>
+            <th>Who</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.Id
+                </td>
+                <td>
+                    @Html.Raw(item.Text)
+                </td>
+                <td>
+                    <img src="@item.ProfileImage" />
+                    <br /> @item.Username
+                    <br /> @item.ScreenName
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
